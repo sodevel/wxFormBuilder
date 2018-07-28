@@ -126,7 +126,7 @@ void VObjEvtHandler::OnPaint(wxPaintEvent &event)
 		m_designer->CallAfter([this]()
 		{
 			wxClientDC cdc(m_window);
-			m_designer->HighlightSelection(cdc);
+			m_designer->HighlightSelection(cdc, true);
 		});
 	}
 

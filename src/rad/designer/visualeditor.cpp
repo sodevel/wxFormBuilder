@@ -743,7 +743,7 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 			// The event handler must be pushed after OnCreated() because that might push its own event handlers, so record it here only
 			// Because wxCollapsiblePane replaces createdWindow the target for the event handler must be recorded as well
 			vobjWindow = createdWindow;
-			vobjHandler = new VObjEvtHandler(createdWindow, obj);
+			vobjHandler = new VObjEvtHandler(m_back, createdWindow, obj);
 			break;
 
 		case COMPONENT_TYPE_SIZER:
@@ -769,7 +769,7 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 				// The event handler must be pushed after OnCreated() because that might push its own event handlers, so record it here only
 				// Because wxCollapsiblePane replaces createdWindow the target for the event handler must be recorded as well
 				vobjWindow = createdWindow;
-				vobjHandler = new VObjEvtHandler(createdWindow, obj);
+				vobjHandler = new VObjEvtHandler(m_back, createdWindow, obj);
 			}
 			break;
 		}
@@ -1313,7 +1313,7 @@ wxInnerFrame(parent, id, pos, size, style)
 	m_actPanel = NULL;
 	SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
 
-	GetFrameContentPanel()->PushEventHandler(new HighlightPaintHandler(GetFrameContentPanel()));
+	GetFrameContentPanel()->PushEventHandler(new HighlightPaintHandler(this, GetFrameContentPanel()));
 }
 
 DesignerWindow::~DesignerWindow()
@@ -1385,8 +1385,13 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 		}
 	}
 
-	wxSize size;
 	PObjectBase object = m_selObj.lock();
+	if (!(object && m_actPanel))
+	{
+		return;
+	}
+
+	wxSize size;
 	if ( m_selSizer )
 	{
 		wxScrolledWindow* scrolwin = wxDynamicCast(m_selSizer->GetContainingWindow (), wxScrolledWindow);
@@ -1621,20 +1626,19 @@ BEGIN_EVENT_TABLE(DesignerWindow::HighlightPaintHandler,wxEvtHandler)
 END_EVENT_TABLE()
 
 
-DesignerWindow::HighlightPaintHandler::HighlightPaintHandler(wxWindow *win)
+DesignerWindow::HighlightPaintHandler::HighlightPaintHandler(DesignerWindow* designer, wxWindow *win)
 {
+	m_designer = designer;
   m_window = win;
 }
 
 void DesignerWindow::HighlightPaintHandler::OnPaint(wxPaintEvent &event)
 {
-	wxWindow *aux = m_window;
-	while (!aux->IsKindOf(CLASSINFO(DesignerWindow))) aux = aux->GetParent();
-	DesignerWindow *dsgnWin = (DesignerWindow*) aux;
-	if (dsgnWin->GetActivePanel() == m_window)
+	wxPaintDC dc(m_window);
+
+	if (m_designer->GetActivePanel() == m_window)
 	{
-		wxPaintDC dc(m_window);
-		dsgnWin->HighlightSelection(dc);
+		m_designer->HighlightSelection(dc);
 	}
 
 	event.Skip();

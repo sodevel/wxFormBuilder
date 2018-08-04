@@ -123,7 +123,11 @@ void VObjEvtHandler::OnPaint(wxPaintEvent &event)
 
 	if (m_designer->GetActivePanel() == m_window)
 	{
-		m_designer->HighlightSelection(dc);
+		m_designer->CallAfter([this]()
+		{
+			wxClientDC cdc(m_window);
+			m_designer->HighlightSelection(cdc);
+		});
 	}
 
 	event.Skip();

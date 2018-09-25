@@ -185,10 +185,10 @@ wxFBBitmapProperty::wxFBBitmapProperty(const wxString& label,
 	, m_prevSrc(-1)
 {
 	wxLogMessage("Creating BitmapProperty");
+	AddPrivateChild(CreatePropertySource(wxNOT_FOUND));
 	// TODO: This might be an empty value and must stay an empty and invalid value because there is currently
 	//       no other way to set this property to an empty state which is required to exist.
 	SetValue(WXVARIANT(value));
-	RefreshChildren();
 }
 
 wxPGProperty *wxFBBitmapProperty::CreatePropertySource( int sourceIndex )
@@ -457,12 +457,15 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 	wxArrayString childVals;
 	GetChildValues(currentValue, childVals);
 
+	wxLogMessage(wxString::Format(wxT("Child changed display: %s, full: %s, composite: %s"), Item(childIndex)->GetValueAsString(), Item(childIndex)->GetValueAsString(wxPG_FULL_VALUE), Item(childIndex)->GetValueAsString(wxPG_COMPOSITE_FRAGMENT)));
+
 	// Reset values after source type switch and adjust file paths
 	switch (childIndex)
 	{
 		// source
 		case 0:
 			// childValue.GetInteger() returns the chosen item index
+			wxLogMessage(wxString::Format(wxT("Changed child source index: %i"), childValue.GetInteger()));
 			switch (childValue.GetInteger())
 			{
 				// 'Load From File' and 'Load From Embedded File'
@@ -525,6 +528,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 			break;
 		// file_path || id || resource_name || xrc_name
 		case 1:
+			wxLogMessage(wxString::Format(wxT("Changed child path")));
 			if (childVals.size() > 0 && (childVals[0] == _("Load From File") || childVals[0] == _("Load From Embedded File")))
 			{
 				// Save the initial file path
@@ -539,7 +543,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 			break;
 	}
 
-	//wxLogMessage(wxString::Format(wxT("Refreshing Child: thisValue: %s, childIndex: %i, nextValue: %s"), currentValue, childIndex, nextValue));
+	wxLogMessage(wxString::Format(wxT("Changed child: thisValue: %s, childIndex: %i, nextValue: %s"), currentValue, childIndex, nextValue));
 
 	return WXVARIANT(nextValue);
 }
@@ -548,8 +552,6 @@ void wxFBBitmapProperty::RefreshChildren()
 {
 	wxArrayString childVals;
 	GetChildValues(m_value.GetString(), childVals);
-
-	//wxLogMessage(wxString::Format(wxT("Refreshing value: %s"), m_value.GetString()));
 
 	int sourceIndex = 0;
 	if (childVals.size() > 0)
@@ -580,16 +582,11 @@ void wxFBBitmapProperty::RefreshChildren()
 		}
 	}
 
+	wxLogMessage(wxString::Format(wxT("Refreshing value: %s, sourceIndex: %i"), m_value.GetString(), sourceIndex));
+
 	// After construction no child is present, add the source child, otherwise update it
-	if (GetChildCount() == 0)
-	{
-		AddPrivateChild(CreatePropertySource(sourceIndex));
-	}
-	else
-	{
-		//FIXME: Index or Value?
-		Item(0)->SetValue(sourceIndex);
-	}
+	//FIXME: Index or Value?
+	Item(0)->SetValue(sourceIndex);
 
 	// Update child elements depending on source
 	switch (sourceIndex)

@@ -90,8 +90,6 @@ public:
                         const wxString& name  = wxPG_LABEL,
                         const wxString& value = wxString() );
 
-	~wxFBBitmapProperty() override;
-
     wxPGProperty *CreatePropertySource( int sourceIndex = 0 );
     wxPGProperty *CreatePropertyFilePath() ;
     wxPGProperty *CreatePropertyResourceName();
@@ -100,28 +98,19 @@ public:
     wxPGProperty *CreatePropertyArtId();
     wxPGProperty *CreatePropertyArtClient();
 
-    wxString SetupImage( const wxString &imgPath = wxEmptyString ) ;
-    wxString SetupResource( const wxString &resName = wxEmptyString ) ;
-
-	int prevSrc;
-	void SetPrevSource(int src){prevSrc = src;}
+	wxString SetupImage(const wxString& imgPath = wxEmptyString) const;
 
 	wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
 	                       wxVariant& childValue) const override;
 
-	void OnSetValue() override;
-	void CreateChildren();
+	void RefreshChildren() override;
 
-	void UpdateChildValues(const wxString& value);
 protected:
-
 	void GetChildValues( const wxString& parentValue, wxArrayString& childValues ) const;
 
     static wxArrayString m_ids;
     static wxArrayString m_clients;
-    wxArrayString m_strings;
-
-
+	int m_prevSrc;
 };
 
 // -----------------------------------------------------------------------

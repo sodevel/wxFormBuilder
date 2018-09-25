@@ -144,7 +144,6 @@ private:
     void OnEventGridExpand( wxPropertyGridEvent& event );
 	void OnPropertyGridItemSelected( wxPropertyGridEvent& event );
     void OnReCreateGrid( wxCommandEvent& event );
-	void OnBitmapPropertyChanged( wxCommandEvent& event );
 
 	void RestoreLastSelectedPropItem();
 

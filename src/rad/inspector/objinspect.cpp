@@ -453,7 +453,7 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 
 				if ( propType == PT_BITMAP )
 				{
-					id->RefreshChildren();
+					//id->RefreshChildren();
 				}
 				else if( propType == PT_PARENT )
 				{

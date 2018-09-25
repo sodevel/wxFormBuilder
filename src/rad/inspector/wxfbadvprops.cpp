@@ -188,6 +188,7 @@ wxFBBitmapProperty::wxFBBitmapProperty(const wxString& label,
 	// TODO: This might be an empty value and must stay an empty and invalid value because there is currently
 	//       no other way to set this property to an empty state which is required to exist.
 	SetValue(WXVARIANT(value));
+	RefreshChildren();
 }
 
 wxPGProperty *wxFBBitmapProperty::CreatePropertySource( int sourceIndex )
@@ -456,7 +457,6 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 	wxArrayString childVals;
 	GetChildValues(currentValue, childVals);
 
-	wxLogMessage(wxString::Format(wxT("Refreshing Child: thisValue: %s, childIndex: %i"), currentValue, childIndex));
 	// Reset values after source type switch and adjust file paths
 	switch (childIndex)
 	{
@@ -539,6 +539,8 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 			break;
 	}
 
+	//wxLogMessage(wxString::Format(wxT("Refreshing Child: thisValue: %s, childIndex: %i, nextValue: %s"), currentValue, childIndex, nextValue));
+
 	return WXVARIANT(nextValue);
 }
 
@@ -546,7 +548,8 @@ void wxFBBitmapProperty::RefreshChildren()
 {
 	wxArrayString childVals;
 	GetChildValues(m_value.GetString(), childVals);
-	wxLogMessage(wxString::Format(wxT("Refreshing value: %s"), m_value.GetString()));
+
+	//wxLogMessage(wxString::Format(wxT("Refreshing value: %s"), m_value.GetString()));
 
 	int sourceIndex = 0;
 	if (childVals.size() > 0)
@@ -580,7 +583,7 @@ void wxFBBitmapProperty::RefreshChildren()
 	// After construction no child is present, add the source child, otherwise update it
 	if (GetChildCount() == 0)
 	{
-		GetGrid()->AppendIn(this, CreatePropertySource(sourceIndex));
+		AddPrivateChild(CreatePropertySource(sourceIndex));
 	}
 	else
 	{
@@ -604,7 +607,7 @@ void wxFBBitmapProperty::RefreshChildren()
 						GetGrid()->DeleteProperty(p);
 					}
 				}
-				GetGrid()->AppendIn(this, CreatePropertyFilePath());
+				AddPrivateChild(CreatePropertyFilePath());
 			}
 
 			if (childVals.size() > 1)
@@ -632,7 +635,7 @@ void wxFBBitmapProperty::RefreshChildren()
 						GetGrid()->DeleteProperty(p);
 					}
 				}
-				GetGrid()->AppendIn(this, CreatePropertyResourceName());
+				AddPrivateChild(CreatePropertyResourceName());
 			}
 
 			if (childVals.size() > 1)
@@ -652,8 +655,8 @@ void wxFBBitmapProperty::RefreshChildren()
 						GetGrid()->DeleteProperty(p);
 					}
 				}
-				GetGrid()->AppendIn(this, CreatePropertyResourceName());
-				GetGrid()->AppendIn(this, CreatePropertyIconSize());
+				AddPrivateChild(CreatePropertyResourceName());
+				AddPrivateChild(CreatePropertyIconSize());
 			}
 
 			if (childVals.size() > 1)
@@ -682,7 +685,7 @@ void wxFBBitmapProperty::RefreshChildren()
 						GetGrid()->DeleteProperty(p);
 					}
 				}
-				GetGrid()->AppendIn(this, CreatePropertyXrcName());
+				AddPrivateChild(CreatePropertyXrcName());
 			}
 
 			if (childVals.size() > 1)
@@ -702,8 +705,8 @@ void wxFBBitmapProperty::RefreshChildren()
 						GetGrid()->DeleteProperty(p);
 					}
 				}
-				GetGrid()->AppendIn(this, CreatePropertyArtId());
-				GetGrid()->AppendIn(this, CreatePropertyArtClient());
+				AddPrivateChild(CreatePropertyArtId());
+				AddPrivateChild(CreatePropertyArtClient());
 			}
 
 			if (childVals.size() > 1)

@@ -52,7 +52,7 @@ class wxFBIPC;
 #define AppDataDestroy()  	(ApplicationData::Destroy())
 
 const char* const VERSION = "3.9.0";
-const char* const REVISION = "";
+const char* const REVISION = "-91e8818";
 
 // This class is a singleton class.
 

@@ -1,16 +1,105 @@
-BasedOnStyle: LLVM
-IndentWidth: 4
-TabWidth: 4
-AccessModifierOffset: -4
-UseTab: ForIndentation
-AllowShortIfStatementsOnASingleLine: true
-ColumnLimit: 100
-ConstructorInitializerIndentWidth: 0
-AllowShortFunctionsOnASingleLine: None
-PointerAlignment: Left
-SortIncludes: false
+BasedOnStyle: Google
+AccessModifierOffset: -3
+# Would be nice if this would work for control statements as well
+AlignAfterOpenBracket: AlwaysBreak
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignConsecutiveMacros: false
+AlignEscapedNewlines: DontAlign
+AlignOperands: true
+AlignTrailingComments: false
+AllowAllArgumentsOnNextLine: true
+AllowAllConstructorInitializersOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: true
+AlwaysBreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: true
+AlwaysBreakTemplateDeclarations: No
+BinPackArguments: true
+BinPackParameters: true
+BraceWrapping:
+  AfterCaseLabel: false
+  # Required because no break after inheritance list possible
+  AfterClass: true
+  # Set to false after https://reviews.llvm.org/D33029
+  AfterControlStatement: MultiLine
+  AfterEnum: false
+  # Required because no break after initializer list possible
+  AfterFunction: true
+  AfterNamespace: false
+  AfterStruct: false
+  AfterUnion: false
+  AfterExternBlock: false
+  BeforeCatch: false
+  BeforeElse: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+BreakBeforeBinaryOperators: None
+BreakBeforeBraces: Custom
+BreakBeforeTernaryOperators: true
+# Set to AfterColon after https://reviews.llvm.org/D33029
+BreakConstructorInitializers: BeforeComma
+# Set to AfterColon after https://reviews.llvm.org/D33029
+BreakInheritanceList: BeforeComma
+BreakStringLiterals: false
+ColumnLimit: 120
+CompactNamespaces: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
-SpaceBeforeParens: ControlStatements
-SpacesInContainerLiterals: true
-Cpp11BracedListStyle: false
+ConstructorInitializerIndentWidth: 3
+ContinuationIndentWidth: 3
+Cpp11BracedListStyle: true
+DerivePointerAlignment: false
+FixNamespaceComments: false
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:           '^<wx/.*\.h>'
+    Priority:        2
+    SortPriority:    0
+  - Regex:           '^<.*\.(h|hh|hpp)>'
+    Priority:        3
+    SortPriority:    0
+  - Regex:           '^<.*'
+    Priority:        1
+    SortPriority:    0
+  - Regex:           '.*'
+    Priority:        4
+    SortPriority:    0
 IndentCaseLabels: true
+IndentGotoLabels: true
+IndentPPDirectives: BeforeHash
+IndentWidth: 3
+IndentWrappedFunctionNames: false
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 1
+NamespaceIndentation: None
+PointerAlignment: Left
+ReflowComments: true
+SortIncludes: true
+SortUsingDeclarations: true
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 1
+SpacesInAngles: false
+SpacesInCStyleCastParentheses: false
+SpacesInContainerLiterals: true
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+Standard: Auto
+TabWidth: 3
+UseTab: Never

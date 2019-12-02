@@ -1073,7 +1073,7 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 			if ( !icon.empty() && wxFileName::FileExists( iconFullPath ) )
 			{
 				wxImage img( iconFullPath, wxBITMAP_TYPE_ANY );
-				obj_info->SetIconFile( wxBitmap( img.Scale( ICON_SIZE, ICON_SIZE ) ) );
+				obj_info->SetIconFile( wxBitmap( img.Scale( AppBitmaps::GetScaledSize(ICON_SIZE), AppBitmaps::GetScaledSize(ICON_SIZE) ) ) );
 			}
 			else
 			{

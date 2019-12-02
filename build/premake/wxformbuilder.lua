@@ -71,6 +71,7 @@ project "wxFormBuilder"
     configuration "vs*"
         defines         {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
         buildoptions    {"/std:c++17", "/wd4003"}
+        files           {"../../src/hidpi.manifest"}
 
     configuration {"macosx", "Debug"}
         postbuildcommands{"sh ../../../install/macosx/postbuild.sh -c debug"}

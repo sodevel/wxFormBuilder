@@ -31,60 +31,104 @@
 
 #include <default.xpm>
 #include <ticpp.h>
+#include <wx/app.h>
 
-static std::map< wxString, wxBitmap > m_bitmaps;
+static std::map<wxString, wxBitmap> m_bitmaps;
 
-wxBitmap AppBitmaps::GetBitmap( wxString iconname, unsigned int size )
-{
-	std::map< wxString, wxBitmap >::iterator bitmap;
-	bitmap = m_bitmaps.find( iconname );
+wxBitmap AppBitmaps::GetBitmap(wxString iconname, unsigned int size) {
+	std::map<wxString, wxBitmap>::iterator bitmap;
+	bitmap = m_bitmaps.find(iconname);
 	wxBitmap bmp;
-	if ( bitmap != m_bitmaps.end() )
-	{
+	if (bitmap != m_bitmaps.end()) {
 		bmp = m_bitmaps[iconname];
+	} else {
+		bmp = m_bitmaps[wxT("unknown")];
 	}
-	else
-	{
-		bmp = m_bitmaps[ wxT("unknown") ];
-	}
-	if ( size != 0 )
-	{
+	if (size != 0) {
+		// adjust for DPI
+		size = GetScaledSize(size);
 		// rescale it to requested size
-		if ( bmp.GetWidth() != (int)size || bmp.GetHeight() != (int)size )
-		{
+		if (bmp.GetWidth() != (int)size || bmp.GetHeight() != (int)size) {
 			wxImage image = bmp.ConvertToImage();
-			bmp = wxBitmap( image.Scale(size, size) );
+			bmp = wxBitmap(image.Scale(size, size));
 		}
 	}
 	return bmp;
 }
 
-void AppBitmaps::LoadBitmaps( wxString filepath, wxString iconpath )
-{
-	try
-	{
-		m_bitmaps[ wxT("unknown") ] = wxBitmap( default_xpm );
+void AppBitmaps::LoadBitmaps(wxString filepath, wxString iconpath) {
+	try {
+		m_bitmaps[wxT("unknown")] = wxBitmap(default_xpm);
 
 		ticpp::Document doc;
-		XMLUtils::LoadXMLFile( doc, true, filepath );
+		XMLUtils::LoadXMLFile(doc, true, filepath);
 
-		ticpp::Element* root = doc.FirstChildElement( "icons" );
-		ticpp::Element* elem = root->FirstChildElement( "icon", false );
-		while ( elem )
-		{
-			wxString name = _WXSTR( elem->GetAttribute("name") );
-			wxString file = _WXSTR( elem->GetAttribute("file") );
-			m_bitmaps[name] = wxBitmap( iconpath + file, wxBITMAP_TYPE_ANY );
+		ticpp::Element* root = doc.FirstChildElement("icons");
+		ticpp::Element* elem = root->FirstChildElement("icon", false);
+		while (elem) {
+			wxString name = _WXSTR(elem->GetAttribute("name"));
+			wxString file = _WXSTR(elem->GetAttribute("file"));
+			m_bitmaps[name] = wxBitmap(iconpath + file, wxBITMAP_TYPE_ANY);
 
-			elem = elem->NextSiblingElement( "icon", false );
+			elem = elem->NextSiblingElement("icon", false);
 		}
-	}
-	catch ( ticpp::Exception& ex )
-	{
-		wxLogError( _("Error loading images: %s"), _WXSTR( ex.m_details ).c_str() );
-	}
-	catch ( wxFBException& ex )
-	{
-		wxLogError( _("Error loading images: %s"), ex.what() );
+	} catch (ticpp::Exception& ex) {
+		wxLogError(_("Error loading images: %s"), _WXSTR(ex.m_details).c_str());
+	} catch (wxFBException& ex) {
+		wxLogError(_("Error loading images: %s"), ex.what());
 	}
 }
+
+int AppBitmaps::GetScaledSize(unsigned int size) {
+	const auto* window = wxTheApp ? wxTheApp->GetTopWindow() : nullptr;
+	//FIXME: How to decide when to use GetContentScaleFactor() and when FromDIP()?
+	//return (window ? window->GetContentScaleFactor() * size : size);
+	return (window ? window->FromDIP(size) : size);
+	//return (2 * size);
+}
+
+
+#if 0
+// We consider 96 DPI to be the standard value, this is correct at least for
+// MSW, but could conceivably need adjustment for the other platforms.
+static const int BASELINE_DPI = 96;
+
+static wxSize GetDPIHelper(const wxWindowBase* w) {
+	wxSize dpi;
+
+	if (w) dpi = w->GetDPI();
+	if (!dpi.x || !dpi.y) dpi = wxScreenDC().GetPPI();
+	if (!dpi.x || !dpi.y) dpi = wxSize(BASELINE_DPI, BASELINE_DPI);
+
+	return dpi;
+}
+
+double wxWindowBase::GetContentScaleFactor() const {
+	const wxSize dpi = GetDPIHelper(this);
+
+	// We use just the vertical component of the DPI because it's the one
+	// that counts most and, in practice, it's equal to the horizontal one
+	// anyhow.
+	return dpi.y / (double)BASELINE_DPI;
+}
+
+/* static */
+wxSize wxWindowBase::FromDIP(const wxSize& sz, const wxWindowBase* w) {
+	const wxSize dpi = GetDPIHelper(w);
+
+	// Take care to not scale -1 because it has a special meaning of
+	// "unspecified" which should be preserved.
+	return wxSize(sz.x == -1 ? -1 : wxMulDivInt32(sz.x, dpi.x, BASELINE_DPI),
+	              sz.y == -1 ? -1 : wxMulDivInt32(sz.y, dpi.y, BASELINE_DPI));
+}
+
+/* static */
+wxSize wxWindowBase::ToDIP(const wxSize& sz, const wxWindowBase* w) {
+	const wxSize dpi = GetDPIHelper(w);
+
+	// Take care to not scale -1 because it has a special meaning of
+	// "unspecified" which should be preserved.
+	return wxSize(sz.x == -1 ? -1 : wxMulDivInt32(sz.x, BASELINE_DPI, dpi.x),
+	              sz.y == -1 ? -1 : wxMulDivInt32(sz.y, BASELINE_DPI, dpi.y));
+}
+#endif

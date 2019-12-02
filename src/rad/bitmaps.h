@@ -35,4 +35,5 @@ class AppBitmaps {
 public:
 	static wxBitmap GetBitmap(wxString iconname, unsigned int size = 0);
 	static void LoadBitmaps(wxString filepath, wxString iconpath);
+	static int GetScaledSize(unsigned int size);
 };

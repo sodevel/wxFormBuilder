@@ -171,7 +171,7 @@ void wxFbPalette::Create()
 		wxBoxSizer *sizer = new wxBoxSizer( wxHORIZONTAL );
 
 		wxAuiToolBar *toolbar = new wxAuiToolBar( panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER );
-		toolbar->SetToolBitmapSize( wxSize( TOOL_SIZE, TOOL_SIZE ) );
+		toolbar->SetToolBitmapSize( wxSize( AppBitmaps::GetScaledSize(TOOL_SIZE), AppBitmaps::GetScaledSize(TOOL_SIZE) ) );
 		PopulateToolbar(page.second, toolbar);
 		m_tv.push_back( toolbar );
 

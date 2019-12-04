@@ -1549,7 +1549,7 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 wxToolBar * MainFrame::CreateFBToolBar()
 {
 	wxToolBar* toolbar = CreateToolBar();
-	toolbar->SetToolBitmapSize( wxSize( TOOL_SIZE, TOOL_SIZE ) );
+	toolbar->SetToolBitmapSize( wxSize( AppBitmaps::GetScaledSize(TOOL_SIZE), AppBitmaps::GetScaledSize(TOOL_SIZE) ) );
 	toolbar->AddTool( ID_NEW_PRJ, wxT( "New Project" ), AppBitmaps::GetBitmap( wxT( "new" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "New Project (Ctrl+N)" ), wxT( "Start a new project." ) );
 	toolbar->AddTool( ID_OPEN_PRJ, wxT( "Open Project" ), AppBitmaps::GetBitmap( wxT( "open" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Open Project (Ctrl+O)" ), wxT( "Open an existing project." ) );
 	toolbar->AddTool( ID_SAVE_PRJ, wxT( "Save Project" ), AppBitmaps::GetBitmap( wxT( "save" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Save Project (Ctrl+S)" ), wxT( "Save the current project." ) );

@@ -1083,12 +1083,12 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 			if ( !smallIcon.empty() && wxFileName::FileExists( smallIconFullPath ) )
 			{
 				wxImage img( smallIconFullPath, wxBITMAP_TYPE_ANY );
-				obj_info->SetSmallIconFile( wxBitmap( img.Scale( SMALL_ICON_SIZE, SMALL_ICON_SIZE ) ) );
+				obj_info->SetSmallIconFile( wxBitmap( img.Scale( AppBitmaps::GetScaledSize(SMALL_ICON_SIZE), AppBitmaps::GetScaledSize(SMALL_ICON_SIZE) ) ) );
 			}
 			else
 			{
 				wxImage img = obj_info->GetIconFile().ConvertToImage();
-				obj_info->SetSmallIconFile( wxBitmap( img.Scale( SMALL_ICON_SIZE, SMALL_ICON_SIZE ) ) );
+				obj_info->SetSmallIconFile( wxBitmap( img.Scale( AppBitmaps::GetScaledSize(SMALL_ICON_SIZE), AppBitmaps::GetScaledSize(SMALL_ICON_SIZE) ) ) );
 			}
 
 			// Parse the Properties

@@ -29,6 +29,7 @@
 #include "../utils/debug.h"
 #include "appdata.h"
 #include "auitabart.h"
+#include "bitmaps.h"
 
 #include <map>
 #include <vector>
@@ -170,7 +171,7 @@ void wxFbPalette::Create()
 		wxBoxSizer *sizer = new wxBoxSizer( wxHORIZONTAL );
 
 		wxAuiToolBar *toolbar = new wxAuiToolBar( panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER );
-		toolbar->SetToolBitmapSize( wxSize( 22, 22 ) );
+		toolbar->SetToolBitmapSize( wxSize( TOOL_SIZE, TOOL_SIZE ) );
 		PopulateToolbar(page.second, toolbar);
 		m_tv.push_back( toolbar );
 

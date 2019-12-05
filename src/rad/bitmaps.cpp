@@ -44,7 +44,7 @@ wxBitmap AppBitmaps::GetBitmap(wxString iconname, Size size) {
 	} else {
 		bmp = m_bitmaps[wxT("unknown")];
 	}
-	if (size != Size::ANY) {
+	if (size != Size::Any) {
 		const auto scaled = GetScaled(size);
 		if (bmp.GetSize() != scaled) {
 			const auto image = bmp.ConvertToImage();

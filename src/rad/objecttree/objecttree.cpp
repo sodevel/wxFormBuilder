@@ -374,12 +374,12 @@ void ObjectTree::UpdateItem(wxTreeItemId id, PObjectBase obj)
 void ObjectTree::Create()
 {
 	// Cramos la lista de iconos obteniendo los iconos de los paquetes.
-	const auto size = AppBitmaps::GetScaled(AppBitmaps::Size::ICON);
+	const auto size = AppBitmaps::GetScaled(AppBitmaps::Size::Icon);
 	unsigned int index = 0;
 	m_iconList = new wxImageList(size.GetWidth(), size.GetHeight());
 
 	{
-		wxBitmap icon = AppBitmaps::GetBitmap(wxT("project"), AppBitmaps::Size::ICON);
+		wxBitmap icon = AppBitmaps::GetBitmap(wxT("project"), AppBitmaps::Size::Icon);
 		m_iconList->Add(icon);
 		m_iconIdx.insert(IconIndexMap::value_type( wxT("_default_"),index++));
 	}

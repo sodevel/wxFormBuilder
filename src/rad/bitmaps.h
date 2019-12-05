@@ -31,14 +31,14 @@
 class AppBitmaps {
 public:
 	enum class Size {
-		ANY = -1,
-		TOOL = 22,
-		ICON = 22,
-		SMALLICON = 16,
-		BIGICON = 32,
+		Any = -1,
+		Tool = 22,
+		IconSmall = 16,
+		Icon = 22,
+		IconBig = 32,
 	};
 	
-	static wxBitmap GetBitmap(wxString iconname, Size size = Size::ANY);
+	static wxBitmap GetBitmap(wxString iconname, Size size = Size::Any);
 	static void LoadBitmaps(wxString filepath, wxString iconpath);
 	static wxSize GetScaled(Size size);
 	static wxImage GetScaled(const wxImage& image, Size size);

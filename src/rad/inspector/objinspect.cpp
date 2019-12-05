@@ -94,8 +94,8 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 	m_nb->AddPage( m_pg, _("Properties"), false, 0 );
 	m_nb->AddPage( m_eg, _("Events"),     false, 1 );
 
-	m_nb->SetPageBitmap(0, AppBitmaps::GetBitmap(wxT("properties"), AppBitmaps::Size::SMALLICON));
-	m_nb->SetPageBitmap(1, AppBitmaps::GetBitmap(wxT("events"), AppBitmaps::Size::SMALLICON));
+	m_nb->SetPageBitmap(0, AppBitmaps::GetBitmap(wxT("properties"), AppBitmaps::Size::IconSmall));
+	m_nb->SetPageBitmap(1, AppBitmaps::GetBitmap(wxT("events"), AppBitmaps::Size::IconSmall));
 
 	wxBoxSizer* topSizer = new wxBoxSizer( wxVERTICAL );
 	topSizer->Add( m_nb, 1, wxALL | wxEXPAND, 0 );

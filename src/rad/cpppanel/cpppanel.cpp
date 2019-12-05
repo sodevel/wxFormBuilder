@@ -70,12 +70,12 @@ wxPanel( parent, id )
 	m_cppPanel = new CodeEditor( m_notebook, wxID_ANY);
 	InitStyledTextCtrl( m_cppPanel->GetTextCtrl() );
 	m_notebook->AddPage( m_cppPanel, wxT( "cpp" ), false, 0 );
-	m_notebook->SetPageBitmap( 0, AppBitmaps::GetBitmap( wxT( "cpp" ), 16 ) );
+	m_notebook->SetPageBitmap(0, AppBitmaps::GetBitmap(wxT("cpp"), AppBitmaps::Size::SMALLICON));
 
 	m_hPanel = new CodeEditor( m_notebook, wxID_ANY);
 	InitStyledTextCtrl( m_hPanel->GetTextCtrl() );
 	m_notebook->AddPage( m_hPanel, wxT( "h" ), false, 1 );
-	m_notebook->SetPageBitmap( 1, AppBitmaps::GetBitmap( wxT( "h" ), 16 ) );
+	m_notebook->SetPageBitmap(1, AppBitmaps::GetBitmap(wxT("h"), AppBitmaps::Size::SMALLICON));
 
 	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );
 

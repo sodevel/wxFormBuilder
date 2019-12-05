@@ -25,15 +25,21 @@
 
 #pragma once
 
-const int ICON_SIZE = 22;
-const int TOOL_SIZE = 22;
-const int SMALL_ICON_SIZE = 14;
-
 #include <wx/wx.h>
+#include <wx/image.h>
 
 class AppBitmaps {
 public:
-	static wxBitmap GetBitmap(wxString iconname, unsigned int size = 0);
+	enum class Size {
+		ANY = -1,
+		TOOL = 22,
+		ICON = 22,
+		SMALLICON = 16,
+		BIGICON = 32,
+	};
+	
+	static wxBitmap GetBitmap(wxString iconname, Size size = Size::ANY);
 	static void LoadBitmaps(wxString filepath, wxString iconpath);
-	static int GetScaledSize(unsigned int size);
+	static wxSize GetScaled(Size size);
+	static wxImage GetScaled(const wxImage& image, Size size);
 };

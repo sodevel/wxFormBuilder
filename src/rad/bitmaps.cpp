@@ -35,7 +35,7 @@
 
 static std::map<wxString, wxBitmap> m_bitmaps;
 
-wxBitmap AppBitmaps::GetBitmap(wxString iconname, unsigned int size) {
+wxBitmap AppBitmaps::GetBitmap(wxString iconname, Size size) {
 	std::map<wxString, wxBitmap>::iterator bitmap;
 	bitmap = m_bitmaps.find(iconname);
 	wxBitmap bmp;
@@ -44,13 +44,11 @@ wxBitmap AppBitmaps::GetBitmap(wxString iconname, unsigned int size) {
 	} else {
 		bmp = m_bitmaps[wxT("unknown")];
 	}
-	if (size != 0) {
-		// adjust for DPI
-		size = GetScaledSize(size);
-		// rescale it to requested size
-		if (bmp.GetWidth() != (int)size || bmp.GetHeight() != (int)size) {
-			wxImage image = bmp.ConvertToImage();
-			bmp = wxBitmap(image.Scale(size, size));
+	if (size != Size::ANY) {
+		const auto scaled = GetScaled(size);
+		if (bmp.GetSize() != scaled) {
+			const auto image = bmp.ConvertToImage();
+			bmp = image.Scale(scaled.GetWidth(), scaled.GetHeight());
 		}
 	}
 	return bmp;
@@ -79,12 +77,17 @@ void AppBitmaps::LoadBitmaps(wxString filepath, wxString iconpath) {
 	}
 }
 
-int AppBitmaps::GetScaledSize(unsigned int size) {
-	const auto* window = wxTheApp ? wxTheApp->GetTopWindow() : nullptr;
-	//FIXME: How to decide when to use GetContentScaleFactor() and when FromDIP()?
-	//return (window ? window->GetContentScaleFactor() * size : size);
-	return (window ? window->FromDIP(size) : size);
-	//return (2 * size);
+wxSize AppBitmaps::GetScaled(Size size) {
+	return wxWindow::FromDIP(wxSize(static_cast<int>(size), static_cast<int>(size)), wxTheApp->GetTopWindow());
+}
+
+wxImage AppBitmaps::GetScaled(const wxImage& image, Size size) {
+	const auto scaled = GetScaled(size);
+	if (image.GetSize() != scaled) {
+		return image.Scale(scaled.GetWidth(), scaled.GetHeight());
+	} else {
+		return image;
+	}
 }
 
 

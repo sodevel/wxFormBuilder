@@ -1024,11 +1024,11 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 		if ( !pkgIconName.empty() && wxFileName::FileExists( pkgIconPath ) )
 		{
 			wxImage image( pkgIconPath, wxBITMAP_TYPE_ANY );
-			pkg_icon = wxBitmap( image.Scale( 16, 16 ) );
+			pkg_icon = wxBitmap(AppBitmaps::GetScaled(image, AppBitmaps::Size::SMALLICON));
 		}
 		else
 		{
-			pkg_icon = AppBitmaps::GetBitmap( wxT("unknown"), 16 );
+			pkg_icon = AppBitmaps::GetBitmap(wxT("unknown"), AppBitmaps::Size::SMALLICON);
 		}
 
 		package = PObjectPackage ( new ObjectPackage( _WXSTR(pkg_name), _WXSTR(pkg_desc), pkg_icon ) );
@@ -1073,22 +1073,22 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 			if ( !icon.empty() && wxFileName::FileExists( iconFullPath ) )
 			{
 				wxImage img( iconFullPath, wxBITMAP_TYPE_ANY );
-				obj_info->SetIconFile( wxBitmap( img.Scale( AppBitmaps::GetScaledSize(ICON_SIZE), AppBitmaps::GetScaledSize(ICON_SIZE) ) ) );
+				obj_info->SetIconFile(wxBitmap(AppBitmaps::GetScaled(img, AppBitmaps::Size::ICON)));
 			}
 			else
 			{
-				obj_info->SetIconFile( AppBitmaps::GetBitmap( wxT("unknown"), ICON_SIZE ) );
+				obj_info->SetIconFile(AppBitmaps::GetBitmap(wxT("unknown"), AppBitmaps::Size::ICON));
 			}
 
 			if ( !smallIcon.empty() && wxFileName::FileExists( smallIconFullPath ) )
 			{
 				wxImage img( smallIconFullPath, wxBITMAP_TYPE_ANY );
-				obj_info->SetSmallIconFile( wxBitmap( img.Scale( AppBitmaps::GetScaledSize(SMALL_ICON_SIZE), AppBitmaps::GetScaledSize(SMALL_ICON_SIZE) ) ) );
+				obj_info->SetSmallIconFile(wxBitmap(AppBitmaps::GetScaled(img, AppBitmaps::Size::SMALLICON)));
 			}
 			else
 			{
 				wxImage img = obj_info->GetIconFile().ConvertToImage();
-				obj_info->SetSmallIconFile( wxBitmap( img.Scale( AppBitmaps::GetScaledSize(SMALL_ICON_SIZE), AppBitmaps::GetScaledSize(SMALL_ICON_SIZE) ) ) );
+				obj_info->SetSmallIconFile(wxBitmap(AppBitmaps::GetScaled(img, AppBitmaps::Size::SMALLICON)));
 			}
 
 			// Parse the Properties

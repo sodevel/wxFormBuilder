@@ -177,10 +177,7 @@ void wxFbPalette::Create()
 
 		sizer->Add( toolbar, 1, wxEXPAND, 0 );
 
-		panel->SetAutoLayout( true );
 		panel->SetSizer( sizer );
-		sizer->Fit( panel );
-		sizer->SetSizeHints( panel );
 
 		wxSize cursize = panel->GetSize();
 		if( cursize.x > minsize.x ) minsize.x = cursize.x;
@@ -193,11 +190,10 @@ void wxFbPalette::Create()
 	//Title *title = new Title( this, wxT("Component Palette") );
 	//top_sizer->Add(title,0,wxEXPAND,0);
 	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );
+
 	SetSizer( top_sizer );
-	SetSize( minsize );
-	SetMinSize( minsize );
-	Layout();
-	Fit();
+	//SetSize( minsize );
+	//SetMinSize( minsize );
 }
 
 void wxFbPalette::OnSpinUp( wxSpinEvent& )

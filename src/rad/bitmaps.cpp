@@ -85,7 +85,9 @@ wxSize AppBitmaps::GetScaled(Size size) {
 	const auto window = wxTheApp->GetTopWindow()->GetDPI();
 	const auto screen = wxScreenDC().GetPPI();
 	const auto factor = wxTheApp->GetTopWindow()->GetContentScaleFactor();
-	wxLogDebug("DPI: Window %i, Screen %i; Factor %f", window.GetX(), screen.GetX(), factor);
+	const auto result = wxWindow::FromDIP(wxSize(static_cast<int>(size), static_cast<int>(size)),
+	                                      wxTheApp->GetTopWindow());
+	wxLogDebug("DPI: Window %i, Screen %i; Factor %f; Source %i, Result %i", window.GetX(), screen.GetX(), factor, size, result.GetX());
 	
 #if wxCHECK_VERSION(3, 1, 0)
 	return wxWindow::FromDIP(wxSize(static_cast<int>(size), static_cast<int>(size)), wxTheApp->GetTopWindow());

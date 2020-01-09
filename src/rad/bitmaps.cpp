@@ -32,6 +32,10 @@
 #include <default.xpm>
 #include <ticpp.h>
 #include <wx/app.h>
+#if !wxCHECK_VERSION(3, 1, 0)
+#include <wx/dcscreen.h>
+#include <wx/math.h>
+#endif
 
 static std::map<wxString, wxBitmap> m_bitmaps;
 
@@ -82,7 +86,22 @@ wxSize AppBitmaps::GetScaled(Size size) {
 	const auto screen = wxScreenDC().GetPPI();
 	const auto factor = wxTheApp->GetTopWindow()->GetContentScaleFactor();
 	wxLogDebug("DPI: Window %i, Screen %i; Factor %f", window.GetX(), screen.GetX(), factor);
+	
+#if wxCHECK_VERSION(3, 1, 0)
 	return wxWindow::FromDIP(wxSize(static_cast<int>(size), static_cast<int>(size)), wxTheApp->GetTopWindow());
+#else
+	// This is the wxWindow::FromDIP implementation of wxWidgets 3.1.3
+	static const int BASELINE_DPI = 96;
+
+	wxSize dpi;
+	if (auto* w = wxTheApp->GetTopWindow()) dpi = w->GetDPI();
+	if (!dpi.x || !dpi.y) dpi = wxScreenDC().GetPPI();
+	if (!dpi.x || !dpi.y) dpi = wxSize(BASELINE_DPI, BASELINE_DPI);
+
+	const auto sz = wxSize(static_cast<int>(size), static_cast<int>(size));
+	return wxSize(sz.x == -1 ? -1 : wxMulDivInt32(sz.x, dpi.x, BASELINE_DPI),
+	              sz.y == -1 ? -1 : wxMulDivInt32(sz.y, dpi.y, BASELINE_DPI));
+#endif
 }
 
 wxImage AppBitmaps::GetScaled(const wxImage& image, Size size) {

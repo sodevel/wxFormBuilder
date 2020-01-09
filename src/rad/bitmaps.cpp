@@ -52,7 +52,7 @@ wxBitmap AppBitmaps::GetBitmap(wxString iconname, Size size) {
 		const auto scaled = GetScaled(size);
 		if (bmp.GetSize() != scaled) {
 			const auto image = bmp.ConvertToImage();
-			bmp = image.Scale(scaled.GetWidth(), scaled.GetHeight());
+			bmp = wxBitmap(image.Scale(scaled.GetWidth(), scaled.GetHeight()));
 		}
 	}
 	return bmp;
@@ -82,6 +82,7 @@ void AppBitmaps::LoadBitmaps(wxString filepath, wxString iconpath) {
 }
 
 wxSize AppBitmaps::GetScaled(Size size) {
+#if wxCHECK_VERSION(3, 1, 0)
 	const auto window = wxTheApp->GetTopWindow()->GetDPI();
 	const auto screen = wxScreenDC().GetPPI();
 	const auto factor = wxTheApp->GetTopWindow()->GetContentScaleFactor();
@@ -89,15 +90,13 @@ wxSize AppBitmaps::GetScaled(Size size) {
 	                                      wxTheApp->GetTopWindow());
 	wxLogDebug("DPI: Window %i, Screen %i; Factor %f; Source %i, Result %i", window.GetX(), screen.GetX(), factor, size, result.GetX());
 	
-#if wxCHECK_VERSION(3, 1, 0)
 	return wxWindow::FromDIP(wxSize(static_cast<int>(size), static_cast<int>(size)), wxTheApp->GetTopWindow());
 #else
 	// This is the wxWindow::FromDIP implementation of wxWidgets 3.1.3
 	static const int BASELINE_DPI = 96;
 
 	wxSize dpi;
-	if (auto* w = wxTheApp->GetTopWindow()) dpi = w->GetDPI();
-	if (!dpi.x || !dpi.y) dpi = wxScreenDC().GetPPI();
+	dpi = wxScreenDC().GetPPI();
 	if (!dpi.x || !dpi.y) dpi = wxSize(BASELINE_DPI, BASELINE_DPI);
 
 	const auto sz = wxSize(static_cast<int>(size), static_cast<int>(size));

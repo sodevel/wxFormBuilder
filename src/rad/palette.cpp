@@ -179,21 +179,20 @@ void wxFbPalette::Create()
 
 		panel->SetSizer( sizer );
 
-		wxSize cursize = panel->GetSize();
+		wxSize cursize = panel->GetBestSize();
 		if( cursize.x > minsize.x ) minsize.x = cursize.x;
-		if( cursize.y > minsize.y ) minsize.y = cursize.y + 30;
+		if( cursize.y > minsize.y ) minsize.y = cursize.y;
 
 		m_notebook->AddPage(panel, page.first, false, i);
 		m_notebook->SetPageBitmap(i, page.second->GetPackageIcon());
 
 	}
+	m_notebook->SetMinSize(wxSize(-1, minsize.y + m_notebook->GetTabCtrlHeight()));
 	//Title *title = new Title( this, wxT("Component Palette") );
 	//top_sizer->Add(title,0,wxEXPAND,0);
 	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );
 
 	SetSizer( top_sizer );
-	//SetSize( minsize );
-	//SetMinSize( minsize );
 }
 
 void wxFbPalette::OnSpinUp( wxSpinEvent& )

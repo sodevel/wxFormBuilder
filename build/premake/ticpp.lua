@@ -16,7 +16,7 @@ project "TiCPP"
     defines             {"TIXML_USE_TICPP"}
 
     configuration "not vs*"
-        buildoptions    "-std=c++17"
+        buildoptions    "-std=c++11"
 
     configuration "vs*"
         defines         {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}

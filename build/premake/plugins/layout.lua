@@ -21,7 +21,7 @@ project "layout-components-plugin"
     local libs = "std,richtext,propgrid,stc,ribbon,aui"
 
     configuration "not vs*"
-        buildoptions    "-std=c++17"
+        buildoptions    "-std=c++11"
 
     configuration "vs*"
         buildoptions    "/std:c++17"

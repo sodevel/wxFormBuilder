@@ -2323,7 +2323,7 @@ void ApplicationData::TransferOptionList( ticpp::Element* prop, std::set< wxStri
 		}
 		else
 		{
-			tmpProp = std::make_unique<ticpp::Element>("property");
+			tmpProp = std::unique_ptr<ticpp::Element>(new ticpp::Element("property"));
 			newProp = tmpProp.get();
 			newProp->SetAttribute( "name", newPropName );
 		}

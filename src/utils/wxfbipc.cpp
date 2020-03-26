@@ -179,7 +179,7 @@ bool wxFBIPC::CreateServer( const wxString& name )
 	wxLogNull stopLogging;
 	#endif
 
-	auto server = std::make_unique<AppServer>(name);
+	auto server = std::unique_ptr<AppServer>(new AppServer(name));
 
 	#ifdef __WXMSW__
 		if ( server->Create( name ) )

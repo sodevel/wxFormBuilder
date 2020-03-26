@@ -74,7 +74,7 @@ bool CodeWriter::IsSingleLine(const wxString& code) const
 
 void CodeWriter::ProcessLine(wxString line, bool rawIndents)
 {
-	static const wxRegEx reIndent = wxRegEx(wxT("%TAB%\\s*"), wxRE_ADVANCED);
+	static const wxRegEx reIndent(wxT("%TAB%\\s*"), wxRE_ADVANCED);
 
 	// Cleanup whitespace
 	if (!rawIndents)

@@ -45,7 +45,7 @@ AnnoyingDialog::AnnoyingDialog(const wxString& caption, const wxString& message,
 		}
     }
 
-	auto outerSizer = std::make_unique<wxBoxSizer>(wxVERTICAL);
+	auto outerSizer = std::unique_ptr<wxBoxSizer>(new wxBoxSizer(wxVERTICAL));
 
     wxFlexGridSizer *mainArea = new wxFlexGridSizer(2, 0, 0);
     wxStaticBitmap *bitmap = new wxStaticBitmap(this, wxID_ANY, wxArtProvider::GetBitmap(icon,  wxART_MESSAGE_BOX), wxDefaultPosition);

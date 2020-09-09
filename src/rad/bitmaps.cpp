@@ -82,13 +82,14 @@ void AppBitmaps::LoadBitmaps(wxString filepath, wxString iconpath) {
 }
 
 wxSize AppBitmaps::GetScaled(Size size) {
-#if wxCHECK_VERSION(3, 1, 0)
+#if wxCHECK_VERSION(3, 1, 4)
 	const auto window = wxTheApp->GetTopWindow()->GetDPI();
 	const auto screen = wxScreenDC().GetPPI();
 	const auto factor = wxTheApp->GetTopWindow()->GetContentScaleFactor();
+	const auto dpiFactor = wxTheApp->GetTopWindow()->GetDPIScaleFactor();
 	const auto result = wxWindow::FromDIP(wxSize(static_cast<int>(size), static_cast<int>(size)),
 	                                      wxTheApp->GetTopWindow());
-	wxLogDebug("DPI: Window %i, Screen %i; Factor %f; Source %i, Result %i", window.GetX(), screen.GetX(), factor, size, result.GetX());
+	wxLogDebug("DPI: Window %i, Screen %i; Factor %f, DPI-Factor %f; Source %i, Result %i", window.GetX(), screen.GetX(), factor, dpiFactor, size, result.GetX());
 	
 	return wxWindow::FromDIP(wxSize(static_cast<int>(size), static_cast<int>(size)), wxTheApp->GetTopWindow());
 #else
